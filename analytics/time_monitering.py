@@ -1,135 +1,125 @@
 import gradio as gr
-import os
-from google.genai import types
-# from google import genai
-import google.generativeai as genai
+import json
 from .prompts import TIME_MONITORING_PROMPT
-import time
-from secret import GEMINI_API_KEY
-from config import config
+from model_utils.existing_generation import generate_content_existing
+from model_utils.new_generation import generate_content_new
+import pandas as pd
+from .prompt_templates import PROMPT_TEMPLATES
+import re
 
-def _normalize_state(file_status):
-    """Return a normalized state value that's easy to compare."""
-    # try dict-like first
-    state = None
-    if isinstance(file_status, dict):
-        state = file_status.get("state") or file_status.get("status")
-    else:
-        # try attributes
-        state = getattr(file_status, "state", None) or getattr(file_status, "status", None)
+def create_ui():
+    output_textboxes = {} # Dictionary to store the Textbox components
 
-    # If it's bytes-like or proto enum, try to convert to int
-    if isinstance(state, (int,)):
-        return state
-    if isinstance(state, str):
-        # strip and uppercase for safety
-        s = state.strip().upper()
-        # try numeric string -> int
-        try:
-            return int(s)
-        except Exception:
-            return s
-    # fallback: return repr
-    return repr(state)
+    with gr.Column(): # Use a Column or Row to group elements within the tab
+        gr.Markdown("## Time Monitoring Analysis")
 
-def wait_for_file_active(file_obj, gemini_api_key=None, timeout=60, poll_interval=2):
-    """Poll until file is ACTIVE. Accepts string 'ACTIVE' or numeric enum 2.
-    Returns final file_status object when active, else raises RuntimeError.
-    """
-    start = time.time()
-    last_state = None
+        output_keys = PROMPT_TEMPLATES["time_monitering"]["output_keys"]
 
-    # get an identifier used by genai.get_file
-    fid = None
-    if hasattr(file_obj, "name"):
-        fid = getattr(file_obj, "name")
-    elif isinstance(file_obj, dict) and "name" in file_obj:
-        fid = file_obj["name"]
-    elif hasattr(file_obj, "resource_name"):
-        fid = getattr(file_obj, "resource_name")
-    elif hasattr(file_obj, "uri"):
-        fid = getattr(file_obj, "uri")
+        for key in output_keys:
+            with gr.Group():
+                gr.Markdown((f"### {re.sub(r'(?<!^)(?=[A-Z])', ' ', key)}"))
+                output_textboxes[key] = gr.Textbox(label=f"Generated Output for {key.replace('_', ' ').title()}", interactive=False, lines=5, autoscroll=True, elem_id=f"time_monitering_{key}")
 
-    if not fid:
-        # we still can continue, but print file_obj for debugging
-        print("Warning: couldn't find file identifier. Inspecting file_obj:", file_obj)
+    return output_textboxes
 
-    while time.time() - start < timeout:
-        try:
-            # Prefer genai.get_file if available
-            file_status = None
-            if fid and hasattr(genai, "get_file"):
-                try:
-                    file_status = genai.get_file(fid)
-                except Exception as e:
-                    # some clients expect the resource name without 'files/' etc.
-                    # If get_file fails, fall back to using the original object
-                    file_status = file_obj
-            else:
-                file_status = file_obj
+def analyze_timemonitoring_video(video_path):
+    if not video_path:
+        return None # Return None if no video path
 
-            norm = _normalize_state(file_status)
-            last_state = norm
-            # DEBUG: show exactly what we got (type + value)
-            print("DEBUG file state:", norm, " (type:", type(norm).__name__, ")")
+    def _clean_json_string(text):
+        if text.startswith("Error decoding JSON: "):
+            text = text[len("Error decoding JSON: "):].strip()
+        
+        json_start = text.find("```json")
+        json_end = text.rfind("```")
+        
+        if json_start != -1 and json_end != -1 and json_end > json_start:
+            text = text[json_start + len("```json"):json_end].strip()
+            
+        return text
 
-            # Accept either string "ACTIVE" or numeric 2
-            if norm == "ACTIVE" or norm == 2 or norm == "2":
-                return file_status
+    full_response = ""
+    for chunk in generate_content_existing(video_path, TIME_MONITORING_PROMPT):
+        full_response += chunk
+    
+    # Clean the full_response before attempting to parse JSON
+    cleaned_response = _clean_json_string(full_response)
 
-        except Exception as e:
-            print("Error while checking file state:", e)
-
-        time.sleep(poll_interval)
-
-    raise RuntimeError(f"Timed out waiting for file to become ACTIVE. Last observed state: {last_state}")
-
-def upload_to_gemini(path, mime_type=None):
-    """Uploads the given file to Gemini.
-
-    See https://ai.google.dev/gemini-api/docs/prompting_with_media
-    """
-    file = genai.upload_file(path, mime_type=mime_type)
-    print(f"Uploaded file '{file.display_name}' as: {file.uri}")
-    return file
-
-def analyze_time_monitering_video(video_path):
-    genai.configure(api_key=GEMINI_API_KEY, transport="rest", client_options={"api_endpoint": "generativelanguage.googleapis.com"})
-
-    video_file = upload_to_gemini(video_path, mime_type="video/mp4")
-    # wait (but this will immediately return if already ACTIVE)
     try:
-        active_file = wait_for_file_active(video_file, GEMINI_API_KEY, timeout=90, poll_interval=2)
-    except RuntimeError as e:
-        return f"Upload processed but never became ACTIVE: {e}"
-
-    # now safe to call the model
-    model = genai.GenerativeModel(model_name="gemini-2.5-flash", generation_config=config)
-    # response = model.generate_content(
-    #     contents=[
-    #             types.Part(
-    #                 file_data=types.FileData(file_uri=active_file.uri),
-    #                 video_metadata=types.VideoMetadata(fps=2)
-    #             ),
-    #             types.Part(text=TIME_MONITORING_PROMPT)
-    #         ]
-    #     )
-    response = model.generate_content([TIME_MONITORING_PROMPT, active_file])
-    return getattr(response, "text", str(response))
+        json_data = json.loads(cleaned_response)
+        print("Full JSON structure:", json.dumps(json_data, indent=2))
+        
+        # Find the main data section
+        data = None
+        possible_keys = ["TimeMonitoring", "time_monitoring", "TimeAnalysis", "time_monitering", "analysis", "results"]
+        
+        for key in possible_keys:
+            if key in json_data:
+                data = json_data[key]
+                print(f"Found data under key: {key}")
+                break
+        
+        if data is None:
+            # If no expected key found, use the entire json_data
+            data = json_data
+            print("Using entire JSON data")
+        
+        # Create a dictionary to return with the exact keys the UI expects
+        result = {}
+        
+        # Process each category and format the output
+        for category_name, items in data.items():
+            output_strings = []
+            if isinstance(items, list):
+                for item in items:
+                    if isinstance(item, dict):
+                        parts = []
+                        if "description" in item:
+                            parts.append(f"description: '{item['description']}'")
+                        if "observation" in item:
+                            parts.append(f"observation: '{item['observation']}'")
+                        if "timestamp" in item:
+                            parts.append(f"timestamp: {item['timestamp']}")
+                        if "start_time" in item:
+                            parts.append(f"start_time: '{item['start_time']}'")
+                        if "end_time" in item:
+                            parts.append(f"end_time: '{item['end_time']}'")
+                        if "duration" in item:
+                            parts.append(f"duration: '{item['duration']}'")
+                        if "activity" in item:
+                            parts.append(f"activity: '{item['activity']}'")
+                        if "efficiency_rating" in item:
+                            parts.append(f"efficiency_rating: '{item['efficiency_rating']}'")
+                        if parts:  # Only add if we have content
+                            output_strings.append("\n".join(parts))
+            
+            # Use the exact category names as keys
+            result[category_name] = "\n\n".join(output_strings) if output_strings else "No data found"
+        
+        print("Returning result with keys:", list(result.keys()))
+        return result
+        
+    except json.JSONDecodeError:
+        print(f"Error decoding JSON: {cleaned_response}")
+        return {"error": "Invalid JSON response from model.", "raw_response": cleaned_response}
 
 def create_tab(video_player):
     with gr.Blocks() as time_monitering_tab:
-        gr.Markdown("## Time Monitering Analysis")
-        
         with gr.Row():
-            analysis_output = gr.Textbox(label="Analysis Result", interactive=False, scale=2)
-
+            analyze_button = gr.Button("Analyze Time Monitoring", variant="primary")
         
-        analyze_button = gr.Button("Analyze Time Monitering")
+        gr.Markdown("## Time Monitoring Analysis Scopes")
+        gr.Markdown(TIME_MONITORING_PROMPT) # Display the fixed prompt content
+
+        gr.Markdown("## Analysis Result")
+        with gr.Box():
+            # This will hold the structured UI from time_monitering_ui.py
+            time_monitering_output_display = gr.Blocks() # Use gr.Blocks to hold the dynamic UI
 
         analyze_button.click(
-            analyze_time_monitering_video,
+            analyze_timemonitoring_video,
             inputs=[video_player],
-            outputs=analysis_output
+            outputs=time_monitering_output_display,
+            postprocess=create_ui # Pass the parsed JSON to create_ui
         )
     return time_monitering_tab

@@ -7,6 +7,7 @@ import subprocess
 from config import config
 
 
+
 def generate_content_new(video_path, prompt, fps):
     client = genai.Client(
         api_key=GEMINI_API_KEY,
@@ -15,9 +16,10 @@ def generate_content_new(video_path, prompt, fps):
     model = "gemini-2.5-pro"
 
     # Load video bytes from given path
-    # video_bytes = subprocess.check_output(["python", "video_byte_converter.py", video_path])
+    # video_bytes = subprocess.check_output(["python", "../video_byte_converter.py", video_path])
     with open(video_path, "rb") as f:
         video_bytes = f.read()
+    
 
     contents = [
         types.Content(
@@ -46,13 +48,6 @@ def generate_content_new(video_path, prompt, fps):
         config=config,
     ):
         if chunk.text:
-            print(chunk.text, end="", flush=True)
+            yield chunk.text
 
 
-if __name__ == "__main__":
-    # Example usage (replace with your values)
-    generate_content_new(
-        video_path="./uploads\WIN_20250810_15_56_26_Pro.mp4",
-        prompt="Analyze this video for hygiene violations.",
-        fps=2,
-    )

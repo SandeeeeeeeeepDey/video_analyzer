@@ -11,6 +11,7 @@ import torch
 from facenet_pytorch import InceptionResnetV1
 from mtcnn import MTCNN
 import cv2
+import re
 
 # --- Configuration ---
 EMBEDDING_MODEL = "FaceNet"
@@ -239,7 +240,7 @@ def delete_user(record_id: str):
         return "❌ Record ID is required."
     return face_db.delete_record(record_id)
 
-def create_tab(analyze_button: gr.Button, video_player: gr.Video):
+def create_tab():
     with gr.Blocks() as face_rec_app:
         gr.Markdown("## Face Recognition System")
         with gr.Tab("Verify Identity"):
