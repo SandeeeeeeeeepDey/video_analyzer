@@ -1,0 +1,14 @@
+```json
+{
+  "CustomerBehaviour": {
+    "SatisfactionIndicators": [
+      {
+        "description": "Customer turns to face the camera, smiles, and makes a 'shhh' gesture, indicating a positive and playful demeanor.",
+        "timestamp": "00:15:00"
+      }
+    ],
+    "DissatisfactionIndicators": [],
+    "UnusualActions": []
+  }
+}
+```

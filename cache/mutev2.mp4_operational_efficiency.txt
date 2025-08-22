@@ -1,0 +1,60 @@
+```json
+{
+  "OperationalPractices": {
+    "StoragePractices": [
+      {
+        "observation": "Cabinet door left open after retrieving an item.",
+        "timestamp": "00:10"
+      },
+      {
+        "observation": "Perishable 'CURD' container left on the counter and not immediately refrigerated.",
+        "timestamp": "00:08"
+      },
+      {
+        "observation": "Cabinet door left open after putting a bottle back.",
+        "timestamp": "01:03"
+      },
+      {
+        "observation": "Cabinet door left open after retrieving a mug.",
+        "timestamp": "01:20"
+      },
+      {
+        "observation": "Perishable 'CURD' container again left on the counter after use, not immediately refrigerated.",
+        "timestamp": "01:14"
+      },
+      {
+        "observation": "Cabinet door left open after placing the 'CURD' container back.",
+        "timestamp": "02:04"
+      }
+    ],
+    "TimeSensitiveHandling": [
+      {
+        "observation": "Perishable 'CURD' container was left exposed on the countertop for approximately 48 seconds (00:08 - 00:56) during active preparation, and then for another approximately 50 seconds (01:14 - 02:04).",
+        "timestamp": "00:08"
+      }
+    ],
+    "WasteDisposal": [
+      {
+        "observation": "Empty/partially empty ingredient packet left on the prep surface after use.",
+        "timestamp": "02:29"
+      }
+    ],
+    "EquipmentAndWorkflow": [
+      {
+        "observation": "Staff member paused and engaged with the camera (smiling/pointing) during food preparation, indicating potential for improved focus and workflow efficiency.",
+        "timestamp": "00:14"
+      },
+      {
+        "observation": "Periods of idle waiting or non-productive movements during active cooking process.",
+        "timestamp": "01:06"
+      },
+      {
+        "observation": "Periods of idle waiting or non-productive movements during active cooking process.",
+        "timestamp": "01:55"
+      }
+    ],
+    "ServingAndReplenishment": [],
+    "StaffCoordination": []
+  }
+}
+```

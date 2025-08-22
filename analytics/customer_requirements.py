@@ -47,7 +47,7 @@ def analyze_customerrequirements_video(video_path):
 
     full_response = ""
     try:
-        for chunk in generate_content_existing(video_path, CUSTOMER_REQUIREMENTS_PROMPT):
+        for chunk in generate_content_existing(video_path, CUSTOMER_REQUIREMENTS_PROMPT, "customer_requirements"):
             full_response += chunk
         
         cleaned_response = _clean_json_string(full_response)

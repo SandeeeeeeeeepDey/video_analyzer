@@ -1,0 +1,34 @@
+```json
+{
+  "Safety": {
+    "WorkplaceHazards": [
+      {
+        "observation": "Cluttered countertop with various containers and items, reducing clear workspace and increasing risk of spills or items falling.",
+        "timestamp": "00:00:00"
+      }
+    ],
+    "EquipmentSafety": [
+      {
+        "observation": "Electrical cables from an induction cooktop and other devices are loosely draped over the countertop and in close proximity to the active cooking surface, posing a risk of melting, short-circuiting, or getting snagged.",
+        "timestamp": "00:00:01"
+      }
+    ],
+    "FireAndElectricalSafety": [
+      {
+        "observation": "Multiple electrical wires appear to be connected to a single wall outlet, potentially overloading the circuit and increasing the risk of an electrical fire.",
+        "timestamp": "00:00:00"
+      },
+      {
+        "observation": "Dangling electrical wires are visible from overhead cabinets, which could be accidentally snagged, pulled, or come into contact with liquids, leading to damage or shock.",
+        "timestamp": "00:00:01"
+      }
+    ],
+    "ProtectiveMeasures": [
+      {
+        "observation": "Lack of protective gloves for handling food ingredients directly with bare hands while preparing items to be consumed, posing a potential hygiene risk.",
+        "timestamp": "00:00:29"
+      }
+    ]
+  }
+}
+```

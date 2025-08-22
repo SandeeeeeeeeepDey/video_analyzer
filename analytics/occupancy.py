@@ -39,7 +39,7 @@ def analyze_occupancy_video(video_path):
         return text
 
     full_response = ""
-    for chunk in generate_content_existing(video_path, OCCUPANCY_PROMPT):
+    for chunk in generate_content_existing(video_path, OCCUPANCY_PROMPT, "occupancy"):
         full_response += chunk
     
     # Clean the full_response before attempting to parse JSON

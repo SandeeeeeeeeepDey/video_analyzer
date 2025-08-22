@@ -39,7 +39,7 @@ def analyze_staffbehaviour_video(video_path):
         return text
 
     full_response = ""
-    for chunk in generate_content_existing(video_path, STAFF_BEHAVIOUR_PROMPT):
+    for chunk in generate_content_existing(video_path, STAFF_BEHAVIOUR_PROMPT, "staff_behaviour"):
         full_response += chunk
     
     # Clean the full_response before attempting to parse JSON

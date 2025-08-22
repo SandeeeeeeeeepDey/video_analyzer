@@ -39,7 +39,7 @@ def analyze_followingcookingsteps_video(video_path):
         return text
 
     full_response = ""
-    for chunk in generate_content_existing(video_path, FOLLOWING_COOKING_STEPS_PROMPT):
+    for chunk in generate_content_existing(video_path, FOLLOWING_COOKING_STEPS_PROMPT, "following_cooking_steps"):
         full_response += chunk
     
     # Clean the full_response before attempting to parse JSON

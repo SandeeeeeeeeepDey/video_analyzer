@@ -40,7 +40,7 @@ def analyze_safety_video(video_path):
         return text
 
     full_response = ""
-    for chunk in generate_content_existing(video_path, SAFETY_PROMPT):
+    for chunk in generate_content_existing(video_path, SAFETY_PROMPT, "safety"):
         full_response += chunk
     
     # Clean the full_response before attempting to parse JSON

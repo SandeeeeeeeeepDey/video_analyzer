@@ -1,4 +1,5 @@
 import google.generativeai as genai
+import os
 from google.genai import types
 import time
 from secret import GEMINI_API_KEY
@@ -73,12 +74,25 @@ def upload_to_gemini(path, mime_type=None):
     logging.debug("Uploaded file '%s' as: %s", file.display_name, file.uri)
     return file
 
-def generate_content_existing(video_path, prompt):
+CACHE_DIR = os.path.join(os.path.dirname(__file__), '..', 'cache')
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+def generate_content_existing(video_path, prompt, module_name):
     logging.debug("Starting generate_content_existing for video: %s with prompt: %s", video_path, prompt)
     if not video_path:
         logging.warning("No video path provided to generate_content_existing.")
         return "Please upload a video to analyze."
 
+    video_filename = os.path.basename(video_path)
+    cache_filename = f"{video_filename}_{module_name}.txt"
+    cache_filepath = os.path.join(CACHE_DIR, cache_filename)
+
+    if os.path.exists(cache_filepath):
+        logging.debug(f"Returning cached content for {video_filename} and module: {module_name}")
+        with open(cache_filepath, 'r') as f:
+            return f.read()
+
+    logging.debug(f"No cache found for {video_filename} and module: {module_name}. Calling Gemini API.")
     video_file = upload_to_gemini(video_path, mime_type="video/mp4")
     try:
         active_file = wait_for_file_active(video_file, GEMINI_API_KEY, timeout=90, poll_interval=2)
@@ -92,4 +106,8 @@ def generate_content_existing(video_path, prompt):
     response = model.generate_content([prompt, active_file])
     response_text = getattr(response, "text", str(response))
     logging.debug("Raw model response: %s", response_text)
+
+    with open(cache_filepath, 'w') as f:
+        f.write(response_text)
+
     return response_text

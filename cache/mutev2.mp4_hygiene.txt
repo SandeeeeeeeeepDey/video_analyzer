@@ -1,0 +1,31 @@
+```json
+{
+  "HygieneAndFoodSafety": {
+    "UnhygienicPractices": [
+      { "description": "Man touches his mouth/nose area with his fingers.", "timestamp": "00:15" },
+      { "description": "Man uses a yogurt container lid as a scoop for yogurt (a food ingredient).", "timestamp": "00:27" },
+      { "description": "Man continues to use the yogurt container lid to scrape yogurt from the bowl into the pot.", "timestamp": "00:36" },
+      { "description": "Man uses a personal mug, not a designated food utensil, to scoop liquid from the pot.", "timestamp": "01:09" },
+      { "description": "Man uses the same personal mug to transfer ingredients between containers.", "timestamp": "01:25" },
+      { "description": "Man uses the same personal mug again to scoop liquid from the pot.", "timestamp": "01:31" },
+      { "description": "Man uses the same personal mug again to scoop liquid from the pot.", "timestamp": "01:39" },
+      { "description": "Man uses the same personal mug again to scoop liquid from the pot.", "timestamp": "01:58" }
+    ],
+    "StaffHygieneStandards": [
+      { "observation": "No protective gear (gloves, hairnet, mask, apron) worn by the staff.", "timestamp": "00:00" },
+      { "observation": "The general kitchen environment appears cluttered, with various items on the counter, which could indicate a lack of organized storage or dedicated food preparation space.", "timestamp": "00:00" }
+    ],
+    "SurfaceAndUtensilCleanliness": [
+      { "observation": "Kitchen counter surface appears cluttered with personal items, not maintained as a dedicated clean food preparation area.", "timestamp": "00:00" },
+      { "observation": "Non-designated household items (yogurt container lid and personal mug) are used as food handling utensils.", "timestamp": "00:27" }
+    ],
+    "HandwashingPractices": [
+      { "observation": "No handwashing observed before commencing food preparation.", "timestamp": "00:00" },
+      { "observation": "No handwashing observed after touching non-food surfaces (cabinet handles).", "timestamp": "00:04" },
+      { "observation": "No handwashing observed after touching face/mouth.", "timestamp": "00:16" },
+      { "observation": "No handwashing observed after touching non-food surfaces (cabinet handles).", "timestamp": "01:04" },
+      { "observation": "No handwashing observed after handling external packaging (packet of mix) before stirring food.", "timestamp": "02:17" }
+    ]
+  }
+}
+```

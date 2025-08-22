@@ -39,7 +39,7 @@ def analyze_timemonitering_video(video_path):
         return text
 
     full_response = ""
-    for chunk in generate_content_existing(video_path, TIME_MONITORING_PROMPT):
+    for chunk in generate_content_existing(video_path, TIME_MONITORING_PROMPT, "time_monitering"):
         full_response += chunk
     
     # Clean the full_response before attempting to parse JSON

@@ -1,0 +1,47 @@
+```json
+{
+  "TimeMonitoring": {
+    "TaskDurations": [
+      { "task": "Retrieve first ingredient container (large white)", "start": "00:00:00", "end": "00:00:05", "duration_seconds": 5 },
+      { "task": "Retrieve second ingredient container (small white)", "start": "00:00:07", "end": "00:00:10", "duration_seconds": 3 },
+      { "task": "Retrieve mug", "start": "00:00:10", "end": "00:00:13", "duration_seconds": 3 },
+      { "task": "Check pot on stove", "start": "00:00:13", "end": "00:00:14", "duration_seconds": 1 },
+      { "task": "Place blue-labeled container on scale", "start": "00:00:23", "end": "00:00:25", "duration_seconds": 2 },
+      { "task": "Open and place large white container on scale", "start": "00:00:25", "end": "00:00:27", "duration_seconds": 2 },
+      { "task": "Scoop and add first ingredient to pot", "start": "00:00:27", "end": "00:00:29", "duration_seconds": 2 },
+      { "task": "Scoop and add powder from blue container to pot", "start": "00:00:30", "end": "00:00:47", "duration_seconds": 17 },
+      { "task": "Stir pot", "start": "00:00:48", "end": "00:00:50", "duration_seconds": 2 },
+      { "task": "Put blue container back on counter", "start": "00:00:50", "end": "00:00:52", "duration_seconds": 2 },
+      { "task": "Scoop and add second ingredient to pot (from large white container)", "start": "00:00:53", "end": "00:00:55", "duration_seconds": 2 },
+      { "task": "Store scoop in cabinet", "start": "00:00:56", "end": "00:00:58", "duration_seconds": 2 },
+      { "task": "Store large white container in cabinet", "start": "00:01:00", "end": "00:01:03", "duration_seconds": 3 },
+      { "task": "Scoop and add more second ingredient to pot (re-retrieved large white container)", "start": "00:01:09", "end": "00:01:13", "duration_seconds": 4 },
+      { "task": "Stir pot", "start": "00:01:14", "end": "00:01:16", "duration_seconds": 2 },
+      { "task": "Store large white container in cabinet (final)", "start": "00:01:17", "end": "00:01:20", "duration_seconds": 3 },
+      { "task": "Retrieve tea mug from cabinet", "start": "00:01:21", "end": "00:01:24", "duration_seconds": 3 },
+      { "task": "Scoop and add tea leaves to pot (first addition)", "start": "00:01:25", "end": "00:01:28", "duration_seconds": 3 },
+      { "task": "Scoop and add tea leaves to pot (second addition)", "start": "00:01:31", "end": "00:01:36", "duration_seconds": 5 },
+      { "task": "Stir pot", "start": "00:01:36", "end": "00:01:38", "duration_seconds": 2 },
+      { "task": "Scoop and add tea leaves to pot (third addition)", "start": "00:01:39", "end": "00:01:42", "duration_seconds": 3 },
+      { "task": "Adjust stove settings", "start": "00:01:42", "end": "00:01:44", "duration_seconds": 2 },
+      { "task": "Scoop and add tea leaves to pot (fourth addition)", "start": "00:01:44", "end": "00:01:56", "duration_seconds": 12 },
+      { "task": "Stir pot", "start": "00:01:56", "end": "00:01:59", "duration_seconds": 3 },
+      { "task": "Store tea mug in cabinet", "start": "00:02:00", "end": "00:02:02", "duration_seconds": 2 },
+      { "task": "Retrieve spice jar from cabinet", "start": "00:02:03", "end": "00:02:05", "duration_seconds": 2 },
+      { "task": "Scoop and add spice from jar to pot", "start": "00:02:06", "end": "00:02:08", "duration_seconds": 2 },
+      { "task": "Store spice jar in cabinet", "start": "00:02:09", "end": "00:02:11", "duration_seconds": 2 },
+      { "task": "Retrieve spice packet from cabinet", "start": "00:02:11", "end": "00:02:13", "duration_seconds": 2 },
+      { "task": "Open packet and add spices to pot", "start": "00:02:15", "end": "00:02:32", "duration_seconds": 17 }
+    ],
+    "Delays": [
+      { "description": "Unnecessary interaction with camera, causing idle time during food preparation.", "timestamp": "00:00:14" },
+      { "description": "Brief pause and looking around after storing an item, before retrieving it again.", "timestamp": "00:01:06" }
+    ],
+    "Inefficiencies": [
+      { "description": "Repeated retrieval and storage of the same large white container for small, intermittent additions of ingredients, instead of keeping it accessible or adding all at once.", "timestamp": "00:01:00" },
+      { "description": "Multiple small additions of tea leaves, requiring several scooping actions and interruptions, instead of one consolidated addition.", "timestamp": "00:01:31" },
+      { "description": "Scattered ingredient storage requiring multiple cabinet openings and closing for different items that could be grouped for efficiency.", "timestamp": "00:00:00" }
+    ]
+  }
+}
+```
