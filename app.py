@@ -149,7 +149,7 @@ def create_ui():
                 video_player = gr.Video(label="Video Player", value=initial_video_player_value)
 
                 # --- CHANGE 1: Analyze All button is now in the left panel ---
-                analyze_all_button = gr.Button("Analyze All (Except Face Recognition)", variant="primary")
+                # analyze_all_button = gr.Button("Analyze All (Except Face Recognition)", variant="primary")
 
             with gr.Column(scale=4) as right_panel:
                 # --- CHANGE 2: Collapse button is now in the right panel and small ---
@@ -200,12 +200,12 @@ def create_ui():
 
         # --- Event Handlers ---
 
-        # "Analyze All" button wiring
-        analyze_all_button.click(
-            fn=lambda vp: run_all_analysis(vp, all_output_textboxes),
-            inputs=[video_player],
-            outputs=list(all_output_textboxes.values())
-        )
+        # # "Analyze All" button wiring
+        # analyze_all_button.click(
+        #     fn=lambda vp: run_all_analysis(vp, all_output_textboxes),
+        #     inputs=[video_player],
+        #     outputs=list(all_output_textboxes.values())
+        # )
 
         # File handling and UI interaction wiring
         def update_video_list_and_upload(files, current_paths):
