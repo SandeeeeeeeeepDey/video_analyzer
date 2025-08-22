@@ -176,9 +176,13 @@ def create_ui():
                                     all_output_textboxes[f"{module_name}_output"] = output_comp
                                 else:
                                     # Now UI creation is within the analytics module itself
+                                    print(f"analytics.{module_name}")
                                     analytics_module = importlib.import_module(f"analytics.{module_name}")
+                                    print("analytics_module", analytics_module)
                                     output_textboxes_for_tab = analytics_module.create_ui()
+                                    print("output_textboxes_for_tab", output_textboxes_for_tab)
                                     for key, textbox_comp in output_textboxes_for_tab.items():
+                                        
                                         all_output_textboxes[f"{module_name}_{key}"] = textbox_comp
 
                                 # --- CHANGE 3: Add a local "Analyze" button to the bottom of each tab ---

@@ -86,11 +86,8 @@ def analyze_customerrequirements_video(video_path):
             
             processed_results[category_name] = "\n\n".join(output_strings) if output_strings else "No relevant information found in the video for this category."
 
-        print("output_keys", output_keys)
-        # IMPORTANT: Convert the dictionary of results into a list in the correct order
-        final_output = [processed_results.get(key, f"Error: Key '{key}' not found in model response.") for key in output_keys]
-        print("final_output", final_output)
-        return final_output
+        print("processed_results", processed_results)
+        return processed_results
 
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON: {e}\nRaw response was: {cleaned_response}")

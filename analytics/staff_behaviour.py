@@ -51,7 +51,7 @@ def analyze_staffbehaviour_video(video_path):
         
         # Find the main data section
         data = None
-        possible_keys = ["StaffBehaviour", "staff_behaviour", "Behaviour", "BehaviourAnalysis", "analysis", "results"]
+        possible_keys = ["BehaviorAndCompliance", "staff_behaviour", "Behaviour", "BehaviourAnalysis", "analysis", "results"]
         
         for key in possible_keys:
             if key in json_data:

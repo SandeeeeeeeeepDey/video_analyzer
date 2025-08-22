@@ -13,7 +13,7 @@ def generate_content_new(video_path, prompt, fps):
         api_key=GEMINI_API_KEY,
     )
 
-    model = "gemini-2.5-pro"
+    model = "gemini-2.5-flash"
 
     # Load video bytes from given path
     # video_bytes = subprocess.check_output(["python", "../video_byte_converter.py", video_path])

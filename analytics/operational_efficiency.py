@@ -51,7 +51,7 @@ def analyze_operationalefficiency_video(video_path):
         
         # Find the main data section
         data = None
-        possible_keys = ["OperationalEfficiency", "operational_efficiency", "Efficiency", "analysis", "results"]
+        possible_keys = ["OperationalPractices", "operational_efficiency", "Efficiency", "analysis", "results"]
         
         for key in possible_keys:
             if key in json_data:

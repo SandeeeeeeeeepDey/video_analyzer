@@ -22,7 +22,7 @@ def create_ui():
 
     return output_textboxes
 
-def analyze_timemonitoring_video(video_path):
+def analyze_timemonitering_video(video_path):
     if not video_path:
         return None # Return None if no video path
 
@@ -117,7 +117,7 @@ def create_tab(video_player):
             time_monitering_output_display = gr.Blocks() # Use gr.Blocks to hold the dynamic UI
 
         analyze_button.click(
-            analyze_timemonitoring_video,
+            analyze_timemonitering_video,
             inputs=[video_player],
             outputs=time_monitering_output_display,
             postprocess=create_ui # Pass the parsed JSON to create_ui
