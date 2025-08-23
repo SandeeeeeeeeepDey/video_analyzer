@@ -1,0 +1,12 @@
+```json
+{
+  "OperationalPractices": {
+    "StoragePractices": [],
+    "TimeSensitiveHandling": [],
+    "WasteDisposal": [],
+    "EquipmentAndWorkflow": [],
+    "ServingAndReplenishment": [],
+    "StaffCoordination": []
+  }
+}
+```

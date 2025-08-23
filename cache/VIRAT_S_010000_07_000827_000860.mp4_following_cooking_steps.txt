@@ -1,0 +1,14 @@
+```json
+{
+  "FollowingCookingSteps": {
+    "StepSequence": [],
+    "StepOmissions": [],
+    "StepDeviations": [
+      {
+        "description": "No cooking activity or kitchen area is visible in the provided footage. The video shows an outdoor cafeteria seating area with people walking, not a food preparation or cooking process.",
+        "timestamp": "00:00:00"
+      }
+    ]
+  }
+}
+```

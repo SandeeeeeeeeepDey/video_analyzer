@@ -144,12 +144,12 @@ OPERATIONAL_EFFICIENCY_PROMPT = """You are the Kitchen and Cafeteria Security In
 Operational Practices
 Adhering purely to the complete detailed video:
 
-- **StoragePractices:** cupboards/fridges left open, items on floor, raw & ready-to-eat stored together, visible expired/unstable packaging.  
-- **TimeSensitiveHandling:** perishable items left exposed too long, reheating/reuse without discard — note start/end if visible.  
-- **WasteDisposal:** overflowing bins near prep, waste left on prep surfaces, reusing dropped items.  
-- **EquipmentAndWorkflow:** idle/malfunctioning equipment, inefficient staff movements, multiple staff duplicating tasks, long idle waiting.  
-- **ServingAndReplenishment:** empty serving counters, delays in replenishment, food left ready but not served promptly.  
-- **StaffCoordination:** teamwork vs. disorganization, staff blocking each other’s work, visible confusion or smooth coordination.
+**StoragePractices:** cupboards/fridges left open, items on floor, raw & ready-to-eat stored together, visible expired/unstable packaging.  
+**TimeSensitiveHandling:** perishable items left exposed too long, reheating/reuse without discard — note start/end if visible.  
+**WasteDisposal:** overflowing bins near prep, waste left on prep surfaces, reusing dropped items.  
+**EquipmentAndWorkflow:** idle/malfunctioning equipment, inefficient staff movements, multiple staff duplicating tasks, long idle waiting.  
+**ServingAndReplenishment:** empty serving counters, delays in replenishment, food left ready but not served promptly.  
+**StaffCoordination:** teamwork vs. disorganization, staff blocking each other’s work, visible confusion or smooth coordination.
 
 ## Output (only this JSON)
 {

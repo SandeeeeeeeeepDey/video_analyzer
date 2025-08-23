@@ -7,12 +7,15 @@ from model_utils.new_generation import generate_content_new
 import pandas as pd
 from .prompt_templates import PROMPT_TEMPLATES
 import re
+from .prompts import SAFETY_PROMPT
 
 def create_ui():
     output_textboxes = {} # Dictionary to store the Textbox components
 
     with gr.Column(): # Use a Column or Row to group elements within the tab
         gr.Markdown("## Safety Analysis")
+        gr.Markdown(SAFETY_PROMPT.split("## ")[0].split("\n\nSafety Scopes")[-1])  
+        gr.Markdown("## Analysis Result")
 
         output_keys = PROMPT_TEMPLATES["safety"]["output_keys"]
 

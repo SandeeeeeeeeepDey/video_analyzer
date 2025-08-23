@@ -1,0 +1,9 @@
+```json
+{
+  "CustomerBehaviour": {
+    "SatisfactionIndicators": [],
+    "DissatisfactionIndicators": [],
+    "UnusualActions": []
+  }
+}
+```

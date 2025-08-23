@@ -6,12 +6,15 @@ from model_utils.new_generation import generate_content_new
 import pandas as pd
 from .prompt_templates import PROMPT_TEMPLATES
 import re
+from .prompts import STAFF_BEHAVIOUR_PROMPT
 
 def create_ui():
     output_textboxes = {} # Dictionary to store the Textbox components
 
     with gr.Column(): # Use a Column or Row to group elements within the tab
         gr.Markdown("## Staff Behaviour Analysis")
+        gr.Markdown(STAFF_BEHAVIOUR_PROMPT.split("## ")[0].split("purely to what is clearly visible in the video:\n\n")[-1])
+        gr.Markdown("## Analysis Result")
 
         output_keys = PROMPT_TEMPLATES["staff_behaviour"]["output_keys"]
 

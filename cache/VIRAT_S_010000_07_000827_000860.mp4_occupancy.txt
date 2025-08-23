@@ -1,0 +1,20 @@
+```json
+{
+  "Occupancy": {
+    "OccupancyTimeline": [
+      { "timestamp": "00:00:00", "count": 3 },
+      { "timestamp": "00:05:00", "count": 4 },
+      { "timestamp": "00:12:00", "count": 3 },
+      { "timestamp": "00:19:00", "count": 2 },
+      { "timestamp": "00:22:00", "count": 1 }
+    ],
+    "PeakOccupancy": {
+      "count": 4,
+      "timestamps": ["00:05:00"]
+    },
+    "AverageOccupancy": {
+      "count": 2.92
+    }
+  }
+}
+```

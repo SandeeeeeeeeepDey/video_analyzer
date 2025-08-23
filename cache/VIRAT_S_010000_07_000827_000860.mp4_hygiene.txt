@@ -1,0 +1,10 @@
+```json
+{
+  "HygieneAndFoodSafety": {
+    "UnhygienicPractices": [],
+    "StaffHygieneStandards": [],
+    "SurfaceAndUtensilCleanliness": [],
+    "HandwashingPractices": []
+  }
+}
+```

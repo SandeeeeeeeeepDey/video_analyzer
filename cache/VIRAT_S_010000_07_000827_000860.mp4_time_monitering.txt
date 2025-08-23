@@ -1,0 +1,9 @@
+```json
+{
+  "TimeMonitoring": {
+    "TaskDurations": [],
+    "Delays": [],
+    "Inefficiencies": []
+  }
+}
+```

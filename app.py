@@ -1,9 +1,11 @@
+# app.py
 import gradio as gr
 import importlib
 import os
 import shutil
 import logging
 import torch
+from functools import partial
 
 # Set logging levels for various libraries to reduce verbosity
 logging.getLogger('tensorflow').setLevel(logging.ERROR)
@@ -93,49 +95,6 @@ def create_ui():
 
             return tuple(updates)
 
-        # This function runs analysis for ALL modules (for the main button)
-        def run_all_analysis(video_path, all_outputs_dict):
-            updates = {} # Use a dictionary to store updates with keys
-            
-            if not video_path:
-                return tuple([gr.update(value="Please select a video first.") for _ in all_outputs_dict.values()])
-
-            for module_name_key, textbox_comp in all_outputs_dict.items():
-                # Skip face recognition as per original logic
-                if "face_recognition" in module_name_key:
-                    updates[module_name_key] = gr.update(value="Skipped by Analyze All.")
-                    continue
-                    
-                try:
-                    # Reconstruct module name and output key
-                    parts = module_name_key.split('_', 1)
-                    module_name = parts[0]
-                    output_key = parts[1] if len(parts) > 1 else None
-                    
-                    analytics_module = importlib.import_module(f"analytics.{module_name}")
-                    analyze_func_name = f"analyze_{module_name.replace('_', '')}_video"
-
-                    if hasattr(analytics_module, analyze_func_name):
-                        json_data = getattr(analytics_module, analyze_func_name)(video_path)
-                        
-                        # Check for single-component vs. multi-component
-                        if output_key and isinstance(json_data, dict):
-                            if output_key in json_data:
-                                updates[module_name_key] = gr.update(value=str(json_data[output_key]))
-                            else:
-                                updates[module_name_key] = gr.update(value=f"Key '{output_key}' not found.")
-                        else:
-                            # Single component or key wasn't specified
-                            updates[module_name_key] = gr.update(value=str(json_data))
-                    else:
-                        updates[module_name_key] = gr.update(value=f"Analysis function not found.")
-                except Exception as e:
-                    print(f"Error analyzing {module_name_key}: {e}")
-                    updates[module_name_key] = gr.update(value=f"Error: {e}")
-            
-            # Return updates in the correct order based on the keys of all_outputs_dict
-            ordered_updates = [updates[key] for key in all_outputs_dict.keys()]
-            return tuple(ordered_updates)
 
         with gr.Row():
             with gr.Column(scale=1, min_width=300, visible=True) as left_panel:
@@ -147,9 +106,6 @@ def create_ui():
                 selected_video_display = gr.Textbox(label="Selected Video", interactive=False, value=initial_video_dropdown_value)
                 initial_video_player_value = os.path.join(UPLOADS_DIR, get_video_files()[0]) if get_video_files() else None
                 video_player = gr.Video(label="Video Player", value=initial_video_player_value)
-
-                # --- CHANGE 1: Analyze All button is now in the left panel ---
-                # analyze_all_button = gr.Button("Analyze All (Except Face Recognition)", variant="primary")
 
             with gr.Column(scale=4) as right_panel:
                 # --- CHANGE 2: Collapse button is now in the right panel and small ---
@@ -168,27 +124,219 @@ def create_ui():
                             output_textboxes_for_tab = {}
                             module_name = tab_name.lower().replace(" ", "_")
                             try:
+                                # Face recognition special case (you already had this)
                                 if module_name == "face_recognition":
                                     module = importlib.import_module(f"analytics.{module_name}")
                                     output_comp = module.create_tab()
-                                    # Standardize to a dictionary for consistent handling
                                     output_textboxes_for_tab = {"output": output_comp}
                                     all_output_textboxes[f"{module_name}_output"] = output_comp
-                                else:
-                                    # Now UI creation is within the analytics module itself
-                                    print(f"analytics.{module_name}")
-                                    analytics_module = importlib.import_module(f"analytics.{module_name}")
-                                    print("analytics_module", analytics_module)
-                                    output_textboxes_for_tab = analytics_module.create_ui()
-                                    print("output_textboxes_for_tab", output_textboxes_for_tab)
-                                    for key, textbox_comp in output_textboxes_for_tab.items():
+                                # Add this case in your tab creation loop, after the queue_length case:
+
+                                elif module_name == "following_cooking_steps":
+                                        analytics_module = importlib.import_module("analytics.following_cooking_steps")
                                         
+                                        # 2. Call the create_tab function from that module.
+                                        #    It will return a complete, pre-wired tab.
+                                        #    No other code is needed here.
+                                        analytics_module.create_tab(video_player)
+
+                                        # 3. We use 'continue' because this module handles its own UI creation
+                                        #    and we don't want the generic button logic below to run.
+                                        continue
+                                    # analytics_module = importlib.import_module("analytics.following_cooking_steps")
+                                    
+                                    # # Create the UI components directly in the tab
+                                    # with gr.Column():
+                                    #     # Add SOP input textbox at the top
+                                        
+                                        
+                                    #     # Create the output textboxes using the module's create_ui function
+                                    #     following_cooking_steps_ui = analytics_module.create_ui()
+
+                                    # # Capture the analyzer function now (avoid late binding)
+                                    # analyzer = getattr(analytics_module, "analyze_followingcookingsteps_video", None)
+                                    # if analyzer is None:
+                                    #     # try a couple of plausible alternate names
+                                    #     for alt in ("analyze", "analyze_video", "process_video", "run"):
+                                    #         analyzer = getattr(analytics_module, alt, None)
+                                    #         if analyzer:
+                                    #             break
+                                    # if analyzer is None:
+                                    #     available = [n for n in dir(analytics_module) if not n.startswith("_")]
+                                    #     raise AttributeError(
+                                    #         "No analyzer found in analytics.following_cooking_steps. Expected 'analyze_followingcookingsteps_video' or similar. "
+                                    #         f"Available: {available}"
+                                    #     )
+
+                                    # # register textboxes globally
+                                    # for key, comp in following_cooking_steps_ui.items():
+                                    #     all_output_textboxes[f"{module_name}_{key}"] = comp
+
+                                    # # keep local reference so later generic code won't try to create another Analyze button
+                                    # output_textboxes_for_tab = following_cooking_steps_ui
+
+                                    # # prepare outputs in exact order the handler will return them
+                                    # outputs_list = list(following_cooking_steps_ui.values())
+
+                                    # # handler closes over analyzer (a concrete function object)
+                                    # def following_cooking_steps_handler(video_path, sop_input, ui_components=following_cooking_steps_ui, analyzer=analyzer):
+                                    #     if not video_path:
+                                    #         empty_texts = [""] * len(ui_components)
+                                    #         return empty_texts
+
+                                    #     # call the captured analyzer with SOP input
+                                    #     result_data = analyzer(video_path, sop_input)
+
+                                    #     # prepare textbox values in same order as ui_components.keys()
+                                    #     text_values = []
+                                    #     for key in ui_components.keys():
+                                    #         if isinstance(result_data, dict):
+                                    #             val = result_data.get(key, "")
+                                    #         else:
+                                    #             val = ""
+                                    #         text_values.append("" if val is None else str(val))
+
+                                    #     return text_values
+
+                                    # # Bind the analyze button
+                                    # local_analyze_button.click(
+                                    #     fn=following_cooking_steps_handler, 
+                                    #     inputs=[video_player, sop_textbox],  # Include SOP textbox as input
+                                    #     outputs=outputs_list
+                                    # )
+
+                                    # # skip the generic Analyze button creation below for this tab
+                                    # continue
+                                # Occupancy special case (fixed)
+                                elif module_name == "occupancy":
+                                    analytics_module = importlib.import_module("analytics.occupancy")
+                                    occupancy_ui = analytics_module.create_ui()  # dict: json_output, video_output, text_outputs(dict)
+
+                                    # Capture the analyzer function now (avoid late binding)
+                                    analyzer = getattr(analytics_module, "analyze_occupancy_video", None)
+                                    if analyzer is None:
+                                        # try a couple of plausible alternate names
+                                        for alt in ("analyze", "analyze_video", "process_video", "run"):
+                                            analyzer = getattr(analytics_module, alt, None)
+                                            if analyzer:
+                                                break
+                                    if analyzer is None:
+                                        available = [n for n in dir(analytics_module) if not n.startswith("_")]
+                                        raise AttributeError(
+                                            "No analyzer found in analytics.occupancy. Expected 'analyze_occupancy_video' or similar. "
+                                            f"Available: {available}"
+                                        )
+
+                                    # attach the concrete function (optional convenience)
+                                    occupancy_ui["analyze_fn"] = analyzer
+
+                                    # register textboxes globally
+                                    for key, comp in occupancy_ui["text_outputs"].items():
+                                        all_output_textboxes[f"{module_name}_{key}"] = comp
+
+                                    # keep local reference so later generic code won't try to create another Analyze button
+                                    output_textboxes_for_tab = occupancy_ui["text_outputs"]
+
+                                    # prepare outputs in exact order the handler will return them
+                                    outputs_list = [occupancy_ui["video_output"]] + list(occupancy_ui["text_outputs"].values())# [occupancy_ui["json_output"], occupancy_ui["video_output"]] + list(occupancy_ui["text_outputs"].values())
+
+                                    # handler closes over analyzer (a concrete function object)
+                                    def occupancy_handler(video_path, ui_components=occupancy_ui, analyzer=analyzer):
+                                        if not video_path:
+                                            empty_texts = [""] * len(ui_components["text_outputs"])
+                                            return None, *empty_texts
+
+                                        # call the captured analyzer
+                                        json_data, enriched_video_path = analyzer(video_path)
+
+                                        # prepare textbox values in same order as ui_components["text_outputs"].keys()
+                                        text_values = []
+                                        for key in ui_components["text_outputs"].keys():
+                                            if isinstance(json_data, dict):
+                                                val = json_data.get(key, "")
+                                            else:
+                                                val = ""
+                                            text_values.append("" if val is None else str(val))
+
+                                        return enriched_video_path, *text_values
+
+                                    # create and bind the analyze button (only once for occupancy)
+                                    local_analyze_button = gr.Button("Analyze", variant="secondary")
+                                    local_analyze_button.click(fn=occupancy_handler, inputs=[video_player], outputs=outputs_list)
+
+                                    # skip the generic Analyze button creation below for this tab
+                                    continue
+
+                                # Default case: module provides its own UI function
+                                # Queue Length special case (exactly like occupancy)
+                                elif module_name == "queue_length":
+                                    analytics_module = importlib.import_module("analytics.queue_length")
+                                    queue_length_ui = analytics_module.create_ui()  # dict: video_output, text_outputs(dict)
+
+                                    # Capture the analyzer function now (avoid late binding)
+                                    analyzer = getattr(analytics_module, "analyze_queue_length_video", None)
+                                    if analyzer is None:
+                                        # try a couple of plausible alternate names
+                                        for alt in ("analyze", "analyze_video", "process_video", "run"):
+                                            analyzer = getattr(analytics_module, alt, None)
+                                            if analyzer:
+                                                break
+                                    if analyzer is None:
+                                        available = [n for n in dir(analytics_module) if not n.startswith("_")]
+                                        raise AttributeError(
+                                            "No analyzer found in analytics.queue_length. Expected 'analyze_queue_length_video' or similar. "
+                                            f"Available: {available}"
+                                        )
+
+                                    # attach the concrete function (optional convenience)
+                                    queue_length_ui["analyze_fn"] = analyzer
+
+                                    # register textboxes globally
+                                    for key, comp in queue_length_ui["text_outputs"].items():
+                                        all_output_textboxes[f"{module_name}_{key}"] = comp
+
+                                    # keep local reference so later generic code won't try to create another Analyze button
+                                    output_textboxes_for_tab = queue_length_ui["text_outputs"]
+
+                                    # prepare outputs in exact order the handler will return them
+                                    outputs_list = [queue_length_ui["video_output"]] + list(queue_length_ui["text_outputs"].values())
+
+                                    # handler closes over analyzer (a concrete function object)
+                                    def queue_length_handler(video_path, ui_components=queue_length_ui, analyzer=analyzer):
+                                        if not video_path:
+                                            empty_texts = [""] * len(ui_components["text_outputs"])
+                                            return None, *empty_texts
+
+                                        # call the captured analyzer
+                                        json_data, enriched_video_path = analyzer(video_path)
+
+                                        # prepare textbox values in same order as ui_components["text_outputs"].keys()
+                                        text_values = []
+                                        for key in ui_components["text_outputs"].keys():
+                                            if isinstance(json_data, dict):
+                                                val = json_data.get(key, "")
+                                            else:
+                                                val = ""
+                                            text_values.append("" if val is None else str(val))
+
+                                        return enriched_video_path, *text_values
+
+                                    # create and bind the analyze button (only once for queue_length)
+                                    local_analyze_button = gr.Button("Analyze", variant="secondary")
+                                    local_analyze_button.click(fn=queue_length_handler, inputs=[video_player], outputs=outputs_list)
+
+                                    # skip the generic Analyze button creation below for this tab
+                                    continue
+                                else:
+                                    analytics_module = importlib.import_module(f"analytics.{module_name}")
+                                    output_textboxes_for_tab = analytics_module.create_ui()
+                                    # register returned components
+                                    for key, textbox_comp in output_textboxes_for_tab.items():
                                         all_output_textboxes[f"{module_name}_{key}"] = textbox_comp
 
-                                # --- CHANGE 3: Add a local "Analyze" button to the bottom of each tab ---
+                                # Generic Analyze button for modules that returned simple textboxes dict
                                 local_analyze_button = gr.Button("Analyze", variant="secondary")
-
-                                # Use a lambda with default arguments to capture loop variables correctly
+                                # Capture loop variables into lambda defaults to avoid late-binding there as well
                                 local_analyze_button.click(
                                     fn=lambda vp, mn=module_name, comps=output_textboxes_for_tab: run_local_analysis(vp, mn, comps),
                                     inputs=[video_player],
@@ -198,14 +346,8 @@ def create_ui():
                             except (ImportError, AttributeError) as e:
                                 gr.Markdown(f"Error loading module for {tab_name}: {e}")
 
-        # --- Event Handlers ---
 
-        # # "Analyze All" button wiring
-        # analyze_all_button.click(
-        #     fn=lambda vp: run_all_analysis(vp, all_output_textboxes),
-        #     inputs=[video_player],
-        #     outputs=list(all_output_textboxes.values())
-        # )
+
 
         # File handling and UI interaction wiring
         def update_video_list_and_upload(files, current_paths):

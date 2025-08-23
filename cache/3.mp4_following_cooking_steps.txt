@@ -1,0 +1,16 @@
+```json
+{
+  "FollowingCookingSteps": {
+    "StepSequence": [
+      { "step": "Stirring a white liquid in a pot on an induction cooktop", "timestamp": "00:00:00" },
+      { "step": "Adding contents from an opaque packet into the pot", "timestamp": "00:02:00" },
+      { "step": "Stirring the mixture in the pot", "timestamp": "00:04:00" }
+    ],
+    "StepOmissions": [],
+    "StepDeviations": [
+      { "description": "Use of a white liquid as a primary ingredient, visually consistent with a dairy product (e.g., milk), which directly violates the Standard Operating Procedure (SOP) stating 'Dairy products should absolutely be avoided'. This poses a significant health and safety hazard.", "timestamp": "00:00:00" },
+      { "description": "Addition of contents from an unidentified packet into the food being prepared. The origin and nature of the powdered substance are unknown, posing a critical security and safety risk due to the introduction of unverified ingredients into the President's food.", "timestamp": "00:02:00" }
+    ]
+  }
+}
+```

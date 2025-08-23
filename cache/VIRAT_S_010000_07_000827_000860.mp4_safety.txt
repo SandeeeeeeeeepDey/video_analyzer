@@ -1,0 +1,10 @@
+```json
+{
+  "Safety": {
+    "WorkplaceHazards": [],
+    "EquipmentSafety": [],
+    "FireAndElectricalSafety": [],
+    "ProtectiveMeasures": []
+  }
+}
+```
