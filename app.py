@@ -134,14 +134,7 @@ def create_ui():
 
                                 elif module_name == "following_cooking_steps":
                                         analytics_module = importlib.import_module("analytics.following_cooking_steps")
-                                        
-                                        # 2. Call the create_tab function from that module.
-                                        #    It will return a complete, pre-wired tab.
-                                        #    No other code is needed here.
                                         analytics_module.create_tab(video_player)
-
-                                        # 3. We use 'continue' because this module handles its own UI creation
-                                        #    and we don't want the generic button logic below to run.
                                         continue
                                     # analytics_module = importlib.import_module("analytics.following_cooking_steps")
                                     
