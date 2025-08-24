@@ -168,10 +168,10 @@ class Database:
         verified = distance <= threshold
 
         return {
-            "verified": verified,
+            # "verified": verified,
             "name": metadata.get('name'),
-            "distance": float(f"{distance:.4f}"),
-            "threshold": threshold,
+            "confidence": 1 - float(f"{distance:.4f}"),
+            # "threshold": threshold,
             "id": record_id,
         }
 

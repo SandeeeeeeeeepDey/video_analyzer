@@ -326,15 +326,17 @@ def create_ui():
                                     # register returned components
                                     for key, textbox_comp in output_textboxes_for_tab.items():
                                         all_output_textboxes[f"{module_name}_{key}"] = textbox_comp
-
-                                # Generic Analyze button for modules that returned simple textboxes dict
-                                local_analyze_button = gr.Button("Analyze", variant="secondary")
-                                # Capture loop variables into lambda defaults to avoid late-binding there as well
-                                local_analyze_button.click(
-                                    fn=lambda vp, mn=module_name, comps=output_textboxes_for_tab: run_local_analysis(vp, mn, comps),
-                                    inputs=[video_player],
-                                    outputs=list(output_textboxes_for_tab.values())
-                                )
+                                if module_name == "face_recognition":
+                                    continue
+                                else:
+                                    # Generic Analyze button for modules that returned simple textboxes dict
+                                    local_analyze_button = gr.Button("Analyze", variant="secondary")
+                                    # Capture loop variables into lambda defaults to avoid late-binding there as well
+                                    local_analyze_button.click(
+                                        fn=lambda vp, mn=module_name, comps=output_textboxes_for_tab: run_local_analysis(vp, mn, comps),
+                                        inputs=[video_player],
+                                        outputs=list(output_textboxes_for_tab.values())
+                                    )
 
                             except (ImportError, AttributeError) as e:
                                 gr.Markdown(f"Error loading module for {tab_name}: {e}")
