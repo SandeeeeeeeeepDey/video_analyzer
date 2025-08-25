@@ -22,7 +22,7 @@ def create_ui():
             with gr.Group():
                 gr.Markdown((f"### {re.sub(r'(?<!^)(?=[A-Z])', ' ', key)}"))
                 # Store the Textbox component in the dictionary
-                output_textboxes[key] = gr.Textbox(label=f"Generated Output for {key.replace('_', ' ').title()}", interactive=False, lines=5, autoscroll=True, elem_id=f"customer_requirements_{key}")
+                output_textboxes[key] = gr.Textbox(label=f"", interactive=False, lines=5, autoscroll=True, elem_id=f"customer_requirements_{key}") # Generated Output for {key.replace('_', ' ').title()}
 
     # Return the dictionary of Textbox components
     return output_textboxes

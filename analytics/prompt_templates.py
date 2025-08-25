@@ -42,8 +42,8 @@ PROMPT_TEMPLATES = {
         "prompt": CUSTOMER_BEHAVIOUR_PROMPT,
         "output_keys": [
             "SatisfactionIndicators",
-            "DissatisfactionIndicators",
-            "UnusualActions"
+            # "DissatisfactionIndicators",
+            # "UnusualActions"
         ],
     },
     "operational_efficiency": {
@@ -62,7 +62,7 @@ PROMPT_TEMPLATES = {
         "output_keys": [
             "SuspiciousActions",
             "CustomerInteraction",
-            "ProfessionalConduct",
+            # "ProfessionalConduct",
             "TeamworkAndCoordination",
             "RuleCompliance"
         ],

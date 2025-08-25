@@ -21,7 +21,7 @@ def create_ui():
         for key in output_keys:
             with gr.Group():
                 gr.Markdown((f"### {re.sub(r'(?<!^)(?=[A-Z])', ' ', key)}"))
-                output_textboxes[key] = gr.Textbox(label=f"Generated Output for {key.replace('_', ' ').title()}", interactive=False, lines=5, autoscroll=True, elem_id=f"time_monitering_{key}")
+                output_textboxes[key] = gr.Textbox(label=f"", interactive=False, lines=5, autoscroll=True, elem_id=f"time_monitering_{key}")
 
     return output_textboxes
 

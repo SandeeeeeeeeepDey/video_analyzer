@@ -170,7 +170,8 @@ class Database:
         return {
             # "verified": verified,
             "name": metadata.get('name'),
-            "confidence": 1 - float(f"{distance:.4f}"),
+            "confidance": max(0.0, min(100.0, (1 - distance) * 100))
+, # always positive percentage
             # "threshold": threshold,
             "id": record_id,
         }
@@ -178,9 +179,9 @@ class Database:
     def delete_record(self, record_id: str) -> str:
         try:
             self.collection.delete(ids=[record_id])
-            return f"✅ Record '{record_id}' deleted successfully."
+            return f"Record '{record_id}' deleted successfully."
         except Exception as e:
-            return f"❌ Failed to delete record '{record_id}': {e}"
+            return f"Failed to delete record '{record_id}': {e}"
 
 # --- Gradio Handlers & UI ---
 face_db = Database(db_path=VECTOR_DB_PATH)

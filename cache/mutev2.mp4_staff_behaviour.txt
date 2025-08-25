@@ -1,18 +1,11 @@
 ```json
 {
   "BehaviorAndCompliance": {
-    "SuspiciousActions": [],
+    "SuspiciousActions": [{
+        "description": "Customer turns to face the camera, smiles, and makes a 'shhh' gesture, indicating a positive and playful demeanor.",
+        "timestamp": "00:15:00"
+      }],
     "CustomerInteraction": [],
-    "ProfessionalConduct": [
-      {
-        "description": "Individual looked directly at the CCTV camera, smiled, and made a 'shushing' gesture, followed by a smile and a shrug, before returning to the task. This indicates an unprofessional acknowledgment of surveillance.",
-        "timestamp": "00:00:14"
-      },
-      {
-        "description": "Individual used their teeth to tear open a sealed food ingredient packet, which is an unhygienic practice for food preparation in a professional setting.",
-        "timestamp": "00:02:17"
-      }
-    ],
     "TeamworkAndCoordination": [],
     "RuleCompliance": []
   }

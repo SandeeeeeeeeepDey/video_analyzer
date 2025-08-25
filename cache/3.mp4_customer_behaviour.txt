@@ -1,0 +1,14 @@
+```json
+{
+  "CustomerBehaviour": {
+    "SatisfactionIndicators": [
+      { "description": "Individual briefly smiles while attending to food preparation on the cooktop.", "timestamp": "00:06:00" }
+    ],
+    "DissatisfactionIndicators": [],
+    "UnusualActions": [
+      { "description": "Individual speaks aloud, stating \"Fill more water\" while preparing food.", "timestamp": "00:08:00" },
+      { "description": "Individual speaks aloud, stating \"Done done\" after an action related to food preparation.", "timestamp": "00:09:00" }
+    ]
+  }
+}
+```

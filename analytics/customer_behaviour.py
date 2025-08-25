@@ -17,7 +17,6 @@ def create_ui():
         gr.Markdown("## Analysis Result")
 
         output_keys = PROMPT_TEMPLATES["customer_behaviour"]["output_keys"]
-
         for key in output_keys:
             with gr.Group():
                 gr.Markdown(f"### {re.sub(r'(?<!^)(?=[A-Z])', ' ', key)}")
@@ -60,6 +59,9 @@ def analyze_customerbehaviour_video(video_path):
         
         # Process each category and format the output
         for category_name, items in data.items():
+            print("1111111")
+            print(data)
+            print("2222222")
             output_strings = []
             if isinstance(items, list):
                 for item in items:
@@ -75,8 +77,13 @@ def analyze_customerbehaviour_video(video_path):
                             output_strings.append("\n".join(parts))
             
             # Use the exact category names as keys (PascalCase as they appear in JSON)
-            result[category_name] = "\n\n".join(output_strings) if output_strings else "No data found"
-        
+            result[category_name] = "\n\n".join(output_strings) if output_strings else None
+            print("3333333")
+            print(category_name, result)
+            print("4444444")
+            print(item)
+            print("5555555")
+            print(output_strings)
         print("Returning result with keys:", list(result.keys()))
         return result
         

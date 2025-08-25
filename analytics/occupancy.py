@@ -118,7 +118,7 @@ def create_ui():
             - "text_outputs": dict mapping output_key -> gr.Textbox component
     """
     # Primary components
-    gr.Markdown("## Occupancy Analysis Scopes")
+    gr.Markdown("## Occupancy Analysis")
     
     # Side-by-side layout for description and video
     with gr.Row():
@@ -151,7 +151,7 @@ def create_ui():
                 heading = re.sub(r'(?<!^)(?=[A-Z])', ' ', key)
                 gr.Markdown(f"### {heading}")
                 output_textboxes[key] = gr.Textbox(
-                    label=f"Generated Output for {key.replace('_', ' ').title()}",
+                    label=f"",
                     interactive=False,
                     lines=5,
                     autoscroll=True,

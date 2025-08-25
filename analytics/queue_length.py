@@ -148,7 +148,7 @@ def create_ui():
                 heading = re.sub(r'(?<!^)(?=[A-Z])', ' ', key)
                 gr.Markdown(f"### {heading}")
                 output_textboxes[key] = gr.Textbox(
-                    label=f"Generated Output for {key.replace('_', ' ').title()}",
+                    label=f"",
                     interactive=False,
                     lines=5,
                     autoscroll=True,

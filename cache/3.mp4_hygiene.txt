@@ -1,0 +1,25 @@
+```json
+{
+  "HygieneAndFoodSafety": {
+    "UnhygienicPractices": [
+      { "description": "Bare hands used to handle a food ingredient packet.", "timestamp": "00:00:02" },
+      { "description": "Bare hands used to pour ingredients into a pot.", "timestamp": "00:00:04" },
+      { "description": "Staff member touches their own t-shirt (non-food surface) then immediately interacts with the cooking area without observed handwashing.", "timestamp": "00:00:05" }
+    ],
+    "StaffHygieneStandards": [
+      { "observation": "No hairnet worn by the individual preparing food.", "timestamp": "00:00:00" },
+      { "observation": "No mask worn by the individual preparing food.", "timestamp": "00:00:00" },
+      { "observation": "No gloves worn by the individual preparing food.", "timestamp": "00:00:00" },
+      { "observation": "No apron worn by the individual preparing food.", "timestamp": "00:00:00" }
+    ],
+    "SurfaceAndUtensilCleanliness": [
+      { "observation": "Preparation surface appears cluttered with various items, not conducive to maintaining high hygiene standards.", "timestamp": "00:00:00" },
+      { "observation": "Utensils and pot in use appear visibly clean.", "timestamp": "00:00:00" }
+    ],
+    "HandwashingPractices": [
+      { "observation": "Handwash observed: no, before handling food ingredients.", "timestamp": "00:00:00" },
+      { "observation": "Handwash observed: no, after touching non-food surface (t-shirt) and before continuing food preparation.", "timestamp": "00:00:05" }
+    ]
+  }
+}
+```

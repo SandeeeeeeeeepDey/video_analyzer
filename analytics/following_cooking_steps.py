@@ -21,7 +21,7 @@ def create_ui():
         for key in output_keys:
             with gr.Group():
                 gr.Markdown((f"### {re.sub(r'(?<!^)(?=[A-Z])', ' ', key)}"))
-                output_textboxes[key] = gr.Textbox(label=f"Generated Output for {key.replace('_', ' ').title()}", interactive=False, lines=5, autoscroll=True, elem_id=f"following_cooking_steps_{key}")
+                output_textboxes[key] = gr.Textbox(label=f"", interactive=False, lines=5, autoscroll=True, elem_id=f"following_cooking_steps_{key}")
 
         # Add SOP textbox and button at the bottom, side by side
         with gr.Row():
@@ -192,7 +192,7 @@ def create_tab(video_player):
             with gr.Group():
                 gr.Markdown(f"### {re.sub(r'(?<!^)(?=[A-Z])', ' ', key)}")
                 output_textboxes[key] = gr.Textbox(
-                    label=f"Generated Output for {key.replace('_', ' ').title()}", 
+                    label=f"", 
                     interactive=False, 
                     lines=5, 
                     autoscroll=True

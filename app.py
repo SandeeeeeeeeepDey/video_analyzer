@@ -74,16 +74,26 @@ def create_ui():
                     if len(output_components) == 1:
                         key = list(output_components.keys())[0]
                         # If analysis returns a dict, try to find the key, otherwise use the whole result
-                        if isinstance(json_data, dict) and key in json_data:
+
+                        print("json_data", json_data, type(json_data))
+                        print("key", key)
+                        
+                        if key in json_data:
                             updates.append(gr.update(value=str(json_data[key])))
+                            print("single", json_data[key])
+                            print("if", updates)
+                            print(updates[0].values())
+                            updates 
                         else:
                             updates.append(gr.update(value=str(json_data)))
+                            print("else", updates.values())
                     else: # For multi-component modules
                         for key, comp in output_components.items():
                             if key in json_data:
                                 updates.append(gr.update(value=str(json_data[key])))
                             else:
                                 updates.append(gr.update(value=f"Key '{key}' not found."))
+                        print("multi", updates)
                 else:
                     err_msg = f"Analysis function '{analyze_func_name}' not found."
                     updates = [gr.update(value=err_msg) for _ in component_list]
@@ -92,6 +102,8 @@ def create_ui():
                 err_msg = f"Error analyzing {module_name}: {e}"
                 print(err_msg)
                 updates = [gr.update(value=err_msg) for _ in component_list]
+            
+            # print("Tuple check", list(tuple(updates).values()))
 
             return tuple(updates)
 
@@ -324,7 +336,9 @@ def create_ui():
                                     analytics_module = importlib.import_module(f"analytics.{module_name}")
                                     output_textboxes_for_tab = analytics_module.create_ui()
                                     # register returned components
+                                    # print(tab_name, "************")
                                     for key, textbox_comp in output_textboxes_for_tab.items():
+                                        # print("type",type(textbox_comp), "iwbdf", textbox_comp)
                                         all_output_textboxes[f"{module_name}_{key}"] = textbox_comp
                                 if module_name == "face_recognition":
                                     continue
